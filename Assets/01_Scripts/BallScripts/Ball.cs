@@ -1,44 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float speed = 5f;
-    private Rigidbody2D rb;
-    private Vector2 initialDirection;
 
+    private Rigidbody2D rb2d;
+
+    void GoBall()
+    {
+        float rand = Random.Range(0, 2);
+        if (rand < 1)
+        {
+            rb2d.AddForce(new Vector2(20, -15));
+        }
+        else
+        {
+            rb2d.AddForce(new Vector2(-20, -15));
+        }
+    }
+
+    // Use this for initialization
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        // Dirección inicial aleatoria
-        float randomDirection = Random.Range(0, 2) == 0 ? -1f : 1f;
-        initialDirection = new Vector2(randomDirection, Random.Range(-0.5f, 0.5f)).normalized;
-
-        // Aplicar velocidad inicial
-        rb.velocity = initialDirection * speed;
+        rb2d = GetComponent<Rigidbody2D>();
+        Invoke("GoBall", 2);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void ResetBall()
     {
-        // Rebote más natural
-        Vector2 reflectedVelocity = Vector2.Reflect(rb.velocity, collision.contacts[0].normal);
-        rb.velocity = reflectedVelocity.normalized * speed;
+        rb2d.velocity = new Vector2(0, 0);
+        transform.position = Vector2.zero;
     }
 
-    // Método para resetear la bola
-    public void ResetBall()
+    void RestartGame()
     {
-        transform.position = Vector3.zero;
-        rb.velocity = Vector2.zero;
-
-        // Nueva dirección aleatoria después de un breve delay
-        Invoke("SetInitialVelocity", 1f);
+        ResetBall();
+        Invoke("GoBall", 1);
     }
 
-    void SetInitialVelocity()
+    void OnCollisionEnter2D(Collision2D coll)
     {
-        float randomDirection = Random.Range(0, 2) == 0 ? -1f : 1f;
-        Vector2 newDirection = new Vector2(randomDirection, Random.Range(-0.5f, 0.5f)).normalized;
-        rb.velocity = newDirection * speed;
+        if (coll.collider.CompareTag("Player"))
+        {
+            Vector2 vel;
+            vel.x = rb2d.velocity.x;
+            vel.y = (rb2d.velocity.y / 2.0f) + (coll.collider.attachedRigidbody.velocity.y / 3.0f);
+            rb2d.velocity = vel;
+        }
     }
+
 }
