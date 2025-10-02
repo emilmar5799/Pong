@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class SavePuntuationController : MonoBehaviour
 {
     [Header("Puntuation Settings")]
-    [SerializeField] private int score;
+    [SerializeField] private int defaultScore = 0;
 
     [Header("References")]
     [SerializeField] private Text scoreText;
@@ -15,46 +15,43 @@ public class SavePuntuationController : MonoBehaviour
     void Start()
     {
         DisplayHighScore();
+        UpdateScoreDisplayA(0);
+        UpdateScoreDisplayB(0);
     }
   
-    void Update()
-    {
-        HandlerPuntuation();
-    }
-
     public void SavePuntuation (int pointA, int pointB)
     {
-        int currentPoints = PlayerPrefs.GetInt("HighScore");
+        int currentHighScore = PlayerPrefs.GetInt("HighScore", defaultScore);
+        int newHighScore = Mathf.Max(currentHighScore, Mathf.Max(pointA, pointB));
+        PlayerPrefs.SetInt("HighScore", newHighScore);
+        DisplayHighScore();
+    }
 
-        if (pointA > currentPoints)
+    public void UpdateScoreDisplayA(int currentA)
+    {
+        if (scoreTextA != null)
         {
-            PlayerPrefs.SetInt("HighScore", pointA);
-
-        } 
-        else if (pointB > currentPoints) 
-        {
-            PlayerPrefs.SetInt("HighScore", pointB);
-        }
-        else 
-        {
-            PlayerPrefs.SetInt("HighScore", currentPoints);
+            scoreTextA.text = currentA.ToString();
         }
     }
 
-    void HandlerPuntuation()
+    public void UpdateScoreDisplayB(int currentB)
     {
-        SavePuntuation(score, score);
+        if (scoreTextB != null)
+        {
+            scoreTextB.text = currentB.ToString();
+        }
     }
 
     void DisplayHighScore()
     {
-        int highScore = PlayerPrefs.GetInt("HighScore");
+        int highScore = PlayerPrefs.GetInt("HighScore", defaultScore);
 
         if (scoreTextMainMenu != null)
         {
             scoreTextMainMenu.text = highScore.ToString();
-        } 
-        else
+        }
+        else if (scoreText != null)
         {
             scoreText.text = highScore.ToString();
         }
