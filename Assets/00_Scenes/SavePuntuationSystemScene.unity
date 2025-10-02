@@ -408,7 +408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -113, y: 143}
+  m_AnchoredPosition: {x: -161, y: 131}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &827978027
@@ -487,7 +487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 238, y: 143}
+  m_AnchoredPosition: {x: 273, y: 127}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &919182540
@@ -566,7 +566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -298, y: 193}
+  m_AnchoredPosition: {x: 66, y: 145}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1075122663
@@ -640,7 +640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1567debaf44792c4d8aa4ad547bd24e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
+  scoreA: 0
+  scoreB: 0
   scoreTextA: {fileID: 0}
   scoreTextB: {fileID: 0}
   scoreTextMainMenu: {fileID: 0}

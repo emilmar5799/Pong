@@ -3,60 +3,67 @@ using UnityEngine.UI;
 
 public class SavePuntuationController : MonoBehaviour
 {
-    [Header("Puntuation Settings")]
-    [SerializeField] private int score;
+    [Header("Scores")]
+    [SerializeField] private int scoreA = 0; // Jugador Izquierdo
+    [SerializeField] private int scoreB = 0; // Jugador Derecho
 
     [Header("References")]
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text scoreTextA;
-    [SerializeField] private Text scoreTextB;
-    [SerializeField] private Text scoreTextMainMenu;
+    [SerializeField] private Text scoreTextA; // UI Jugador A
+    [SerializeField] private Text scoreTextB; // UI Jugador B
+    [SerializeField] private Text scoreTextMainMenu; // HighScore en menú
 
     void Start()
     {
+        DisplayScores();
         DisplayHighScore();
     }
-  
-    void Update()
+
+    public void AddPoint(bool isLeftWall)
     {
-        HandlerPuntuation();
+        // Si la bola chocó contra la pared izquierda -> punto para jugador derecho
+        if (isLeftWall)
+        {
+            scoreB++;
+        }
+        else
+        {
+            scoreA++;
+        }
+
+        // Guardar highscore
+        SavePuntuation(scoreA, scoreB);
+
+        // Actualizar UI
+        DisplayScores();
     }
 
-    public void SavePuntuation (int pointA, int pointB)
+    public void SavePuntuation(int pointA, int pointB)
     {
-        int currentPoints = PlayerPrefs.GetInt("HighScore");
+        int currentHigh = PlayerPrefs.GetInt("HighScore", 0);
 
-        if (pointA > currentPoints)
+        if (pointA > currentHigh)
         {
             PlayerPrefs.SetInt("HighScore", pointA);
-
-        } 
-        else if (pointB > currentPoints) 
+        }
+        else if (pointB > currentHigh)
         {
             PlayerPrefs.SetInt("HighScore", pointB);
         }
-        else 
-        {
-            PlayerPrefs.SetInt("HighScore", currentPoints);
-        }
     }
 
-    void HandlerPuntuation()
+    void DisplayScores()
     {
-        SavePuntuation(score, score);
+        if (scoreTextA != null) scoreTextA.text = scoreA.ToString();
+        if (scoreTextB != null) scoreTextB.text = scoreB.ToString();
     }
 
     void DisplayHighScore()
     {
-        int highScore = PlayerPrefs.GetInt("HighScore");
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
 
         if (scoreTextMainMenu != null)
         {
             scoreTextMainMenu.text = highScore.ToString();
-        } 
-        else
-        {
-            scoreText.text = highScore.ToString();
         }
     }
 }
